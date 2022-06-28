@@ -42,7 +42,15 @@ export default () => (
 Be sure to make your API send proper [CORS HTTP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) to allow
 the admin's domain to access it.
 
-To do so, if you use the API Platform Distribution, update the value of the `CORS_ALLOW_ORIGIN` parameter in `api/.env` (it will be set to `^https?://localhost:?[0-9]*$`
+`credentials` controls what browsers do with credentials (cookies, HTTP authentication entries, and TLS client certificates). 
+Must be one of the following strings:
+- omit
+- same-origin
+- include
+
+To do so, add `allow-credentials: true` to `config/packages/nelmio_cors.yaml`
+
+To do so, if you use the API Platform Distribution, update the value of the `CORS_ALLOW_ORIGIN` parameter in `api/.env` (it will be set to `^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$` and you use pipe to add allowable domains
 by default).
 
 If you use a custom installation of Symfony and [API Platform Core](../core/), you will need to adjust the [NelmioCorsBundle configuration](https://github.com/nelmio/NelmioCorsBundle#configuration) to expose the `Link` HTTP header and to send proper CORS headers on the route under which the API will be served (`/api` by default).
@@ -59,6 +67,7 @@ nelmio_cors:
             allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
             allow_headers: ['Content-Type', 'Authorization']
             expose_headers: ['Link']
+            allow-credentials: true # set allow-credentials to true 
             max_age: 3600
 ```
 
